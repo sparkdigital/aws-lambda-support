@@ -6,8 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.jstorni.lambdasupport.endpoint.annotations.apigateway.HttpMethod;
 import org.jstorni.lambdasupport.endpoint.annotations.apigateway.Resource;
+import org.jstorni.lambdasupport.endpoint.annotations.apigateway.ResourceMethod;
+import org.jstorni.lambdasupport.endpoint.annotations.apigateway.ResourceMethodPayload;
 import org.jstorni.lambdasupport.endpoint.exceptions.InternalException;
 
 public abstract class BaseEndpoint<T> implements Endpoint {
@@ -27,23 +28,28 @@ public abstract class BaseEndpoint<T> implements Endpoint {
 
 		Method[] methods = getClass().getMethods();
 		for (Method method : methods) {
-			HttpMethod httpMethod = method.getAnnotation(HttpMethod.class);
-			if (httpMethod != null) {
-				entries.add(buildActionRegistryEntryFromMethod(httpMethod,
-						method));
+			ResourceMethod resourceMethod = method
+					.getAnnotation(ResourceMethod.class);
+			if (resourceMethod != null) {
+				ResourceMethodPayload resourceMethodPayload = method
+						.getAnnotation(ResourceMethodPayload.class);
+				entries.add(buildActionRegistryEntryFromMethod(resourceMethod,
+						resourceMethodPayload, method));
 			}
 		}
 
 		return entries;
 	}
 
-	protected Class<?> getPayloadClass(String actionName, HttpMethod httpMethod) {
-		Class<?> payloadClass = httpMethod.payloadClass();
-		if (payloadClass == Void.class && httpMethod.requireInputPayload()) {
+	protected Class<?> getPayloadClass(String actionName,
+			ResourceMethodPayload methodPayload) {
+		if (methodPayload == null) {
+			return null;
+		}
+
+		Class<?> payloadClass = methodPayload.payloadClass();
+		if (payloadClass == Void.class) {
 			throw new InternalException("Expected payload for " + actionName);
-		} else if (payloadClass == Void.class
-				&& !httpMethod.requireInputPayload()) {
-			payloadClass = null;
 		}
 
 		return payloadClass;
@@ -53,15 +59,16 @@ public abstract class BaseEndpoint<T> implements Endpoint {
 
 	@SuppressWarnings("unchecked")
 	protected ActionRegistryEntry buildActionRegistryEntryFromMethod(
-			HttpMethod httpMethod, Method method) {
-		String actionName = httpMethod.actionName();
+			ResourceMethod resourceMethod, ResourceMethodPayload methodPayload,
+			Method method) {
+		String actionName = resourceMethod.actionName();
 		if (actionName == null) {
 			actionName = method.getName();
 		}
 
 		actionName = rootResource.name() + "." + actionName;
 
-		Class<?> payloadClass = getPayloadClass(actionName, httpMethod);
+		Class<?> payloadClass = getPayloadClass(actionName, methodPayload);
 
 		Function<Object, ?> handler;
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jstorni.lambdasupport.endpoint.annotations.lambda.LambdaHandler;
 import org.jstorni.lambdasupport.endpoint.exceptions.BadRequestException;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -40,6 +41,7 @@ public abstract class GenericHandler {
 		}
 	}
 
+	@LambdaHandler
 	public void handle(InputStream in, OutputStream out, Context context)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();

@@ -1,0 +1,16 @@
+package org.jstorni.lambdasupport.endpoint.annotations.apigateway;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+@Target({ METHOD })
+@Retention(RUNTIME)
+public @interface ResourceMethodPayload {
+
+	Class<?> payloadClass() default Void.class;
+
+	boolean inferPayloadFromRepository() default false;
+}
