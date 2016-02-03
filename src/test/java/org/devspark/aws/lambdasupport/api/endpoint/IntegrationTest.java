@@ -38,7 +38,6 @@ public class IntegrationTest {
 						Merchant.class));
 
 		merchantRepository = entityManager.getRepository(Merchant.class);
-
 	}
 
 	@Test
@@ -148,7 +147,7 @@ public class IntegrationTest {
 				return Arrays.asList(new Endpoint[] { new MerchantEndpoint() });
 			}
 		};
-		
+
 		handler.handle(in, out, null);
 
 		byte[] response = out.toByteArray();

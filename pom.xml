@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.devspark</groupId>
-  <artifactId>aws-lambda-support</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>org.devspark</groupId>
+	<artifactId>aws-lambda-support</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
@@ -62,5 +62,20 @@
 			<url>s3://maven-snapshot-repositories/snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>s3-snapshots</id>
+			<url>  
+    https://s3-us-west-2.amazonaws.com/maven-snapshot-repositories/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>s3-releases</id>
+			<url>  
+    https://s3-us-west-2.amazonaws.com/maven-release-repositories/release</url>
+		</repository>
+	</repositories>
 
 </project>
