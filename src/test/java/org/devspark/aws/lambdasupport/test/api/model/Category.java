@@ -6,17 +6,17 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Category extends BaseEntity {
-	
-	@NotNull
-	@Size(min=4, max=32)
-	private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    @NotNull
+    @Size(min = 4, max = 32)
+    private String description;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

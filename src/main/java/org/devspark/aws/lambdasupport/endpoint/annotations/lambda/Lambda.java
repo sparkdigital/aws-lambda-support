@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Lambda {
 
-	String name();
+    String name();
 
-	String description() default "";
+    String description() default "";
 }

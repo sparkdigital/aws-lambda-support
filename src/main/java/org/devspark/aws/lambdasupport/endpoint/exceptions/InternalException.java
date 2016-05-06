@@ -1,14 +1,14 @@
 package org.devspark.aws.lambdasupport.endpoint.exceptions;
 
 public class InternalException extends RuntimeException {
-	private final static String PREFIX = "INTERNAL :: ";
+    private final static String PREFIX = "INTERNAL :: ";
 
-	public InternalException(String message) {
-		super(PREFIX + message);
-	}
+    public InternalException(String message) {
+        super(PREFIX + message);
+    }
 
-	public InternalException(String message, Throwable cause) {
-		super(PREFIX + message, cause);
-	}
+    public InternalException(String message, Throwable cause) {
+        super(PREFIX + message, cause);
+    }
 
 }

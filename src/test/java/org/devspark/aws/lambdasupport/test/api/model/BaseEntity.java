@@ -5,16 +5,16 @@ import javax.persistence.Id;
 
 public abstract class BaseEntity {
 
-	@Id
-	@GeneratedValue(generator = "org.devspark.aws.lorm.id.UUIDIdGenerator")
-	private String id;
+    @Id
+    @GeneratedValue(generator = "org.devspark.aws.lorm.id.UUIDIdGenerator")
+    private String id;
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
 }

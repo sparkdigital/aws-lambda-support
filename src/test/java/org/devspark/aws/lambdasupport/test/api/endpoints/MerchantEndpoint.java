@@ -9,25 +9,24 @@ import org.devspark.aws.lorm.Repository;
 import org.devspark.aws.lorm.mapping.EntityToItemMapperImpl;
 import org.devspark.aws.lorm.mapping.ItemToEntityMapperImpl;
 
-@Resource(name="merchant")
+@Resource(name = "merchant")
 public class MerchantEndpoint extends BaseRepositoryEndpoint<Merchant> {
 
-	private final Repository<Merchant> merchantRepository;
+    private final Repository<Merchant> merchantRepository;
 
-	public MerchantEndpoint() {
-		EntityManager entityManager = Configuration.getEntitymanager();
-		entityManager.addEntity(Merchant.class,
-				new EntityToItemMapperImpl<Merchant>(Merchant.class),
-				new ItemToEntityMapperImpl<Merchant>(Merchant.class,
-						entityManager), new EntityToItemMapperImpl<Merchant>(
-						Merchant.class));
+    public MerchantEndpoint() {
+        EntityManager entityManager = Configuration.getEntitymanager();
+        entityManager.addEntity(Merchant.class,
+                new EntityToItemMapperImpl<Merchant>(Merchant.class),
+                new ItemToEntityMapperImpl<Merchant>(Merchant.class, entityManager),
+                new EntityToItemMapperImpl<Merchant>(Merchant.class));
 
-		merchantRepository = entityManager.getRepository(Merchant.class);
-	}
-	
-	@Override
-	protected Repository<Merchant> getRepository() {
-		return merchantRepository;
-	}
+        merchantRepository = entityManager.getRepository(Merchant.class);
+    }
+
+    @Override
+    protected Repository<Merchant> getRepository() {
+        return merchantRepository;
+    }
 
 }

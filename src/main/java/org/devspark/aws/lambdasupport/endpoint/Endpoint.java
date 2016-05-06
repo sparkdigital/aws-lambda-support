@@ -4,6 +4,6 @@ import java.util.Set;
 
 public interface Endpoint {
 
-	Set<ActionRegistryEntry> getActionRegistryEntries();
-	
+    Set<ActionRegistryEntry> getActionRegistryEntries();
+
 }

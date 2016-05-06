@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface ResourceMethodPayload {
 
-	Class<?> payloadClass() default Void.class;
+    Class<?> payloadClass() default Void.class;
 
-	boolean inferPayloadFromRepository() default false;
+    boolean inferPayloadFromRepository() default false;
 }

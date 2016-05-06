@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target({ METHOD })
 @Retention(RUNTIME)
 public @interface ResourceMethodSecurity {
-	boolean useCallerIdentity() default false;
+    boolean useCallerIdentity() default false;
 
 }

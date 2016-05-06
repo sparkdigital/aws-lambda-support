@@ -8,80 +8,80 @@ import org.devspark.aws.lambdasupport.endpoint.annotations.apigateway.ResourceMe
 import org.devspark.aws.lambdasupport.endpoint.annotations.apigateway.ResourceMethodPayload;
 import org.devspark.aws.lorm.Repository;
 
-public abstract class BaseRepositoryEndpoint<T> extends BaseEndpoint<T> {
+public abstract class BaseRepositoryEndpoint<T> extends BaseEndpoint {
 
-	private Resource rootResource;
+    private Resource rootResource;
 
-	protected abstract Repository<T> getRepository();
+    protected abstract Repository<T> getRepository();
 
-	protected Resource getRootResource() {
-		return rootResource;
-	}
+    protected Resource getRootResource() {
+        return rootResource;
+    }
 
-	@Override
-	protected Class<?> getPayloadClass(String actionName,
-			ResourceMethodPayload resourceMethodPayload) {
-		if (resourceMethodPayload == null) {
-			return null; 
-		}
+    @Override
+    protected Class<?> getPayloadClass(String actionName,
+            ResourceMethodPayload resourceMethodPayload) {
+        if (resourceMethodPayload == null) {
+            return null;
+        }
 
-		Class<?> payloadClass = resourceMethodPayload.payloadClass();
-		if (payloadClass == Void.class
-				&& resourceMethodPayload.inferPayloadFromRepository()) {
-			payloadClass = getRepository().getEntityClass();
-		}
+        Class<?> payloadClass = resourceMethodPayload.payloadClass();
+        if (payloadClass == Void.class
+                && resourceMethodPayload.inferPayloadFromRepository()) {
+            payloadClass = getRepository().getEntityClass();
+        }
 
-		return payloadClass;
-	}
+        return payloadClass;
+    }
 
-	@Override
-	protected Object[] getInvocationParameters() {
-		return new Object[] { getRepository() };
-	}
+    @Override
+    protected Object[] getInvocationParameters() {
+        return new Object[] { getRepository() };
+    }
 
-	@ResourceMethod(actionName = "findAll")
-	public Function<Object, ?> findAllHandle(Repository<T> repository) {
-		return (payload) -> {
-			return repository.findAll();
-		};
-	}
+    @ResourceMethod(actionName = "findAll")
+    public Function<Object, ?> findAllHandle(Repository<T> repository) {
+        return (payload) -> {
+            return repository.findAll();
+        };
+    }
 
-	@Resource(name = "{id}")
-	@ResourceMethod(actionName = "findById")
-	@ResourceMethodPayload(payloadClass = Key.class)
-	public Function<Object, ?> findByIdHandle(Repository<T> repository) {
-		return (payload) -> {
-			return repository.findOne(((Key) payload).getId());
-		};
-	}
+    @Resource(name = "{id}")
+    @ResourceMethod(actionName = "findById")
+    @ResourceMethodPayload(payloadClass = Key.class)
+    public Function<Object, ?> findByIdHandle(Repository<T> repository) {
+        return (payload) -> {
+            return repository.findOne(((Key) payload).getId());
+        };
+    }
 
-	@Resource(name = "{id}")
-	@ResourceMethod(actionName = "deleteById", httpMethod = MethodType.DELETE)
-	@ResourceMethodPayload(payloadClass = Key.class)
-	public Function<Object, ?> deleteByIdHandle(Repository<T> repository) {
-		return (payload) -> {
-			repository.deleteById(((Key) payload).getId());
-			return null;
-		};
-	}
+    @Resource(name = "{id}")
+    @ResourceMethod(actionName = "deleteById", httpMethod = MethodType.DELETE)
+    @ResourceMethodPayload(payloadClass = Key.class)
+    public Function<Object, ?> deleteByIdHandle(Repository<T> repository) {
+        return (payload) -> {
+            repository.deleteById(((Key) payload).getId());
+            return null;
+        };
+    }
 
-	@SuppressWarnings("unchecked")
-	@ResourceMethod(actionName = "create", httpMethod = MethodType.POST)
-	@ResourceMethodPayload(inferPayloadFromRepository = true)
-	public Function<Object, ?> createHandle(Repository<T> repository) {
-		return (payload) -> {
-			return repository.save((T) payload);
-		};
-	}
+    @SuppressWarnings("unchecked")
+    @ResourceMethod(actionName = "create", httpMethod = MethodType.POST)
+    @ResourceMethodPayload(inferPayloadFromRepository = true)
+    public Function<Object, ?> createHandle(Repository<T> repository) {
+        return (payload) -> {
+            return repository.save((T) payload);
+        };
+    }
 
-	@SuppressWarnings("unchecked")
-	@Resource(name = "{id}")
-	@ResourceMethod(actionName = "update", httpMethod = MethodType.PUT)
-	@ResourceMethodPayload(inferPayloadFromRepository = true)
-	public Function<Object, ?> updateHandle(Repository<T> repository) {
-		return (payload) -> {
-			return repository.save((T) payload);
-		};
-	}
+    @SuppressWarnings("unchecked")
+    @Resource(name = "{id}")
+    @ResourceMethod(actionName = "update", httpMethod = MethodType.PUT)
+    @ResourceMethodPayload(inferPayloadFromRepository = true)
+    public Function<Object, ?> updateHandle(Repository<T> repository) {
+        return (payload) -> {
+            return repository.save((T) payload);
+        };
+    }
 
 }

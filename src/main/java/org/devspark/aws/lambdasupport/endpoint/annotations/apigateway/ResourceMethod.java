@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface ResourceMethod {
 
-	String actionName();
+    String actionName();
 
-	MethodType httpMethod() default MethodType.GET;
+    MethodType httpMethod() default MethodType.GET;
 
 }

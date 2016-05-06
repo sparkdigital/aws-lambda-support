@@ -26,133 +26,127 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class IntegrationTest {
 
-	private Repository<Merchant> merchantRepository;
+    private Repository<Merchant> merchantRepository;
 
-	@Before
-	public void setup() {
-		EntityManager entityManager = Configuration.getEntitymanager();
-		entityManager.addEntity(Merchant.class,
-				new EntityToItemMapperImpl<Merchant>(Merchant.class),
-				new ItemToEntityMapperImpl<Merchant>(Merchant.class,
-						entityManager), new EntityToItemMapperImpl<Merchant>(
-						Merchant.class));
+    @Before
+    public void setup() {
+        EntityManager entityManager = Configuration.getEntitymanager();
+        entityManager.addEntity(Merchant.class,
+                new EntityToItemMapperImpl<Merchant>(Merchant.class),
+                new ItemToEntityMapperImpl<Merchant>(Merchant.class, entityManager),
+                new EntityToItemMapperImpl<Merchant>(Merchant.class));
 
-		merchantRepository = entityManager.getRepository(Merchant.class);
-	}
+        merchantRepository = entityManager.getRepository(Merchant.class);
+    }
 
-	@Test
-	public void findByIdTest() throws JsonParseException, JsonMappingException,
-			IOException {
-		Merchant merchant = new Merchant();
-		merchant.setName("sample for test");
-		Merchant updatedMerchant = merchantRepository.save(merchant);
+    @Test
+    public void findByIdTest()
+            throws JsonParseException, JsonMappingException, IOException {
+        Merchant merchant = new Merchant();
+        merchant.setName("sample for test");
+        Merchant updatedMerchant = merchantRepository.save(merchant);
 
-		String request = "{\"action\": \"merchant.findById\", \"payload\": { \"id\": \""
-				+ updatedMerchant.getId() + "\" }}";
+        String request = "{\"action\": \"merchant.findById\", \"payload\": { \"id\": \""
+                + updatedMerchant.getId() + "\" }}";
 
-		String response = invoke(request);
+        String response = invoke(request);
 
-		Assert.assertNotNull(response);
-		Assert.assertTrue(response.length() > 0);
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.length() > 0);
 
-		ObjectMapper mapper = new ObjectMapper();
-		Merchant foundMerchant = mapper.readValue(response, Merchant.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Merchant foundMerchant = mapper.readValue(response, Merchant.class);
 
-		Assert.assertNotNull(foundMerchant);
-		Assert.assertEquals(updatedMerchant.getId(), foundMerchant.getId());
+        Assert.assertNotNull(foundMerchant);
+        Assert.assertEquals(updatedMerchant.getId(), foundMerchant.getId());
 
-	}
+    }
 
-	@Test
-	public void findAll() throws JsonParseException, JsonMappingException,
-			IOException {
-		Merchant merchant = new Merchant();
-		merchant.setName("sample for test");
-		merchantRepository.save(merchant);
+    @Test
+    public void findAll() throws JsonParseException, JsonMappingException, IOException {
+        Merchant merchant = new Merchant();
+        merchant.setName("sample for test");
+        merchantRepository.save(merchant);
 
-		String request = "{\"action\": \"merchant.findAll\"}}";
-		String response = invoke(request);
+        String request = "{\"action\": \"merchant.findAll\"}}";
+        String response = invoke(request);
 
-		Assert.assertNotNull(response);
-		Assert.assertTrue(response.length() > 0);
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.length() > 0);
 
-		ObjectMapper mapper = new ObjectMapper();
-		List<Merchant> foundMerchants = mapper.readValue(response, List.class);
+        ObjectMapper mapper = new ObjectMapper();
+        List<Merchant> foundMerchants = mapper.readValue(response, List.class);
 
-		Assert.assertNotNull(foundMerchants);
-		Assert.assertTrue(foundMerchants.size() > 1);
-	}
+        Assert.assertNotNull(foundMerchants);
+        Assert.assertTrue(foundMerchants.size() > 1);
+    }
 
-	@Test
-	public void deleteById() throws JsonParseException, JsonMappingException,
-			IOException {
-		Merchant merchant = new Merchant();
-		merchant.setName("sample for test");
-		Merchant updatedMerchant = merchantRepository.save(merchant);
+    @Test
+    public void deleteById()
+            throws JsonParseException, JsonMappingException, IOException {
+        Merchant merchant = new Merchant();
+        merchant.setName("sample for test");
+        Merchant updatedMerchant = merchantRepository.save(merchant);
 
-		String request = "{\"action\": \"merchant.deleteById\", \"payload\": { \"id\": \""
-				+ updatedMerchant.getId() + "\" }}";
+        String request = "{\"action\": \"merchant.deleteById\", \"payload\": { \"id\": \""
+                + updatedMerchant.getId() + "\" }}";
 
-		Assert.assertNull(invoke(request));
+        Assert.assertNull(invoke(request));
 
-		Assert.assertNull(merchantRepository.findOne(updatedMerchant.getId()));
+        Assert.assertNull(merchantRepository.findOne(updatedMerchant.getId()));
 
-	}
+    }
 
-	@Test
-	public void save() throws JsonParseException, JsonMappingException,
-			IOException {
-		// add
-		String request = "{\"action\": \"merchant.create\", \"payload\": { \"name\": \""
-				+ "armando barrera" + "\" }}";
-		String response = invoke(request);
+    @Test
+    public void save() throws JsonParseException, JsonMappingException, IOException {
+        // add
+        String request = "{\"action\": \"merchant.create\", \"payload\": { \"name\": \""
+                + "armando barrera" + "\" }}";
+        String response = invoke(request);
 
-		Assert.assertNotNull(response);
-		Assert.assertTrue(response.length() > 0);
+        Assert.assertNotNull(response);
+        Assert.assertTrue(response.length() > 0);
 
-		ObjectMapper mapper = new ObjectMapper();
-		Merchant foundMerchant = mapper.readValue(response, Merchant.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Merchant foundMerchant = mapper.readValue(response, Merchant.class);
 
-		Assert.assertNotNull(foundMerchant);
-		Assert.assertEquals("armando barrera", foundMerchant.getName());
+        Assert.assertNotNull(foundMerchant);
+        Assert.assertEquals("armando barrera", foundMerchant.getName());
 
-		// update
-		request = "{\"action\": \"merchant.update\", \"payload\": { \"name\": \""
-				+ "armando barrera 2"
-				+ "\", \"id\": \""
-				+ foundMerchant.getId() + "\" }}";
-		String updateResponse = invoke(request);
+        // update
+        request = "{\"action\": \"merchant.update\", \"payload\": { \"name\": \""
+                + "armando barrera 2" + "\", \"id\": \"" + foundMerchant.getId()
+                + "\" }}";
+        String updateResponse = invoke(request);
 
-		Assert.assertNotNull(updateResponse);
-		Assert.assertTrue(updateResponse.length() > 0);
+        Assert.assertNotNull(updateResponse);
+        Assert.assertTrue(updateResponse.length() > 0);
 
-		Merchant updatedMerchant = mapper.readValue(updateResponse,
-				Merchant.class);
+        Merchant updatedMerchant = mapper.readValue(updateResponse, Merchant.class);
 
-		Assert.assertNotNull(updatedMerchant);
-		Assert.assertEquals("armando barrera 2", updatedMerchant.getName());
-		Assert.assertEquals(foundMerchant.getId(), updatedMerchant.getId());
+        Assert.assertNotNull(updatedMerchant);
+        Assert.assertEquals("armando barrera 2", updatedMerchant.getName());
+        Assert.assertEquals(foundMerchant.getId(), updatedMerchant.getId());
 
-	}
+    }
 
-	private String invoke(String payload) throws JsonParseException,
-			JsonMappingException, IOException {
-		InputStream in = new ByteArrayInputStream(payload.getBytes());
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
+    private String invoke(String payload)
+            throws JsonParseException, JsonMappingException, IOException {
+        InputStream in = new ByteArrayInputStream(payload.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-		GenericHandler handler = new GenericHandler() {
+        GenericHandler handler = new GenericHandler() {
 
-			@Override
-			protected List<Endpoint> getEndpoints() {
-				return Arrays.asList(new Endpoint[] { new MerchantEndpoint() });
-			}
-		};
+            @Override
+            protected List<Endpoint> getEndpoints() {
+                return Arrays.asList(new Endpoint[] { new MerchantEndpoint() });
+            }
+        };
 
-		handler.handle(in, out, null);
+        handler.handle(in, out, null);
 
-		byte[] response = out.toByteArray();
+        byte[] response = out.toByteArray();
 
-		return response != null && response.length > 0 ? new String(response)
-				: null;
-	}
+        return response != null && response.length > 0 ? new String(response) : null;
+    }
 }

@@ -7,16 +7,16 @@ import javax.validation.constraints.Size;
 @Entity
 public class Reporter extends BaseEntity {
 
-	@NotNull
-	@Size(min = 4, max = 16)
-	private String name;
+    @NotNull
+    @Size(min = 4, max = 16)
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }
