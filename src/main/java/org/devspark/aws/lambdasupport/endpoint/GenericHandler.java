@@ -44,7 +44,9 @@ public abstract class GenericHandler {
     @LambdaHandler
     public void handle(InputStream in, OutputStream out, Context context)
             throws JsonParseException, JsonMappingException, IOException {
+        
         ObjectMapper mapper = new ObjectMapper();
+
         // no JSON exceptions are managed here, at least a valid JSON is
         // expected!
         JsonNode rootNode = mapper.readValue(in, JsonNode.class);
